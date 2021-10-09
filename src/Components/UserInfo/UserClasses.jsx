@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Grid } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import getClasses from "../../Queries/getClasses";
+import { Link } from "react-router-dom";
 
 class UserClasses extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class UserClasses extends Component {
       this.setState({ classes: data });
     });
   }
+
   render() {
     const { classes } = this.state;
     const paperCSS = {
@@ -30,12 +32,12 @@ class UserClasses extends Component {
       <div className="perfilClasses">
         <div className="perfilClasses top">
           <h5>ÚLTIMAS CLASES</h5>
-          <button className="showClasses">VER TODAS</button>
+          <Link className="showClasses" to={{ pathname: "/allClasses" }}>VER TODAS</Link>
         </div>
         <p></p>
 
         <Grid container spacing={3} className="perfilClassesGrid">
-        <Grid item xs={12}>
+          <Grid item xs={12}>
             <Grid container columnSpacing={2}>
               {classes
                 .filter((item, i) => i >= classes.length - 6)
