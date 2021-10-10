@@ -1,0 +1,61 @@
+.allClasses-layout {
+  text-align: center;
+  /* background-color: #282c34; */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  width: 100%;
+}
+.classesGrid {
+  padding: 0em 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.classesInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.classTop {
+  color: white;
+  position: absolute;
+  top: auto;
+  width: 100%;
+  padding: 6px;
+  font-weight: 500;
+}
+
+.showMain {
+  background-color: #ff7900; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 3%;
+  margin: 20px;
+}
+
+.circleLevel {
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  margin-left: 4px;
+  margin-top: 2px;
+}
+
+.circleLevelGrid {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
