@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import UserLayout from "../UserInfo/UserLayout";
 import AllClassesLayout from "../AllClassesLayout/AllClassesLayout";
 import ClassLayout from "../ClassLayout/ClassLayout";
+import ClassesPlaylistLayout from "../ClassesPlaylistLayout/ClassesPlaylistLayout";
 
 class MainLayout extends Component {
   constructor(props) {
@@ -10,9 +11,12 @@ class MainLayout extends Component {
       optionSelected: "user",
       id: 0,
       completedClasses: [],
+      autoRepro: [],
     };
     this.changeSelected = this.changeSelected.bind(this);
     this.completeClass = this.completeClass.bind(this);
+    this.addClassToPlaylist = this.addClassToPlaylist.bind(this);
+    this.updatePlaylist = this.updatePlaylist.bind(this);
   }
 
   changeSelected(page, id) {
@@ -20,11 +24,29 @@ class MainLayout extends Component {
   }
 
   completeClass(viewedClass) {
-    this.setState({ completedClasses: [...this.state.completedClasses, viewedClass] });
+    const { completedClasses } = this.state;
+    if (completedClasses.filter((i) => i === viewedClass).length === 0) {
+      this.setState({
+        completedClasses: [...this.state.completedClasses, viewedClass],
+      });
+    }
+  }
+
+  addClassToPlaylist(id) {
+    const { autoRepro } = this.state;
+    if (autoRepro.filter((i) => i === id).length === 0) {
+      this.setState({ autoRepro: [...autoRepro, id] });
+    } else {
+      this.setState({ autoRepro: autoRepro.filter((p) => p !== id) });
+    }
+  }
+
+  updatePlaylist(autoReproUpdated) {
+    this.setState({ autoRepro: autoReproUpdated });
   }
 
   render() {
-    const { optionSelected, id, completedClasses } = this.state;
+    const { optionSelected, id, completedClasses, autoRepro } = this.state;
 
     let component = <UserLayout changeSelected={this.changeSelected} />;
     if (optionSelected === "user") {
@@ -33,7 +55,9 @@ class MainLayout extends Component {
       component = (
         <AllClassesLayout
           changeSelected={this.changeSelected}
+          addClassToPlaylist={this.addClassToPlaylist}
           completedClasses={completedClasses}
+          autoRepro={autoRepro}
         />
       );
     } else if (optionSelected === "class") {
@@ -42,6 +66,17 @@ class MainLayout extends Component {
           changeSelected={this.changeSelected}
           id={id}
           completeClass={this.completeClass}
+        />
+      );
+    } else if (optionSelected === "classesPlaylist") {
+      component = (
+        <ClassesPlaylistLayout
+          changeSelected={this.changeSelected}
+          completedClasses={completedClasses}
+          id={id}
+          completeClass={this.completeClass}
+          autoRepro={autoRepro}
+          updatePlaylist={this.updatePlaylist}
         />
       );
     }

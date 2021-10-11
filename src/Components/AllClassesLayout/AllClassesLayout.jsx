@@ -11,13 +11,15 @@ class AllClassesLayout extends Component {
     this.state = {
       classes: [],
       trainers: [],
-      completedClasses: [],
-      autoRepro: []
     };
   }
+
   componentDidMount() {
     getClasses().then((data) => {
-      this.setState({ classes: data, completedClasses: this.props.completedClasses });
+      this.setState({
+        classes: data,
+        completedClasses: this.props.completedClasses,
+      });
       getTrainer().then((data) => {
         this.setState({ trainers: data });
       });
@@ -25,7 +27,8 @@ class AllClassesLayout extends Component {
   }
 
   render() {
-    const { classes, trainers, completedClasses } = this.state;
+    const { classes, trainers } = this.state;
+    const { autoRepro, completedClasses } = this.props;
     const paperCSS = {
       display: "flex",
       flexDirection: "column",
@@ -74,19 +77,47 @@ class AllClassesLayout extends Component {
 
     return (
       <div className="allClasses-layout">
-        <Paper
-          className="showMain"
+        <div
           style={{
-            backgroundColor: "#ff7900",
-            color: "white",
-            cursor: "pointer",
-          }}
-          onClick={() => {
-            this.props.changeSelected("user", 0);
+            display: "flex",
+            justifyContent: "space-between",
+            width: "80%",
           }}
         >
-          VOLVER
-        </Paper>
+          <Paper
+            className="showMain"
+            style={{
+              backgroundColor: "#ff7900",
+              color: "white",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              this.props.changeSelected("user", 0);
+            }}
+          >
+            VOLVER
+          </Paper>
+          <Paper
+            disabled
+            className="showMain"
+            style={
+              autoRepro.length === 0
+                ? { backgroundColor: "grey", color: "white", opacity:"0.7"}
+                : {
+                    backgroundColor: "#ff7900",
+                    color: "white",
+                    cursor: "pointer"
+                  }
+            }
+            onClick={() => {
+              if (autoRepro.length !== 0) {
+                this.props.changeSelected("classesPlaylist", autoRepro[0]);
+              }
+            }}
+          >
+            REPRODUCIR AUTOMÁTICAMENTE
+          </Paper>
+        </div>
         <Grid container spacing={3} className="classesGrid">
           <Grid item xs={12}>
             <Grid container columnSpacing={2}>
@@ -96,13 +127,19 @@ class AllClassesLayout extends Component {
                   <Paper
                     className="classGrid"
                     sx={paperCSS}
-                    onClick={() => {
-                      this.props.changeSelected("class", i);
-                    }}
                     style={{ cursor: "pointer" }}
                   >
                     <div className="classTop">
-                      <p className="classTitle">{item.name}</p>
+                      <div style={{ display: "flex", gap: "5px" }}>
+                        <input
+                          type="checkbox"
+                          className="checkPlaylist"
+                          onChange={() => {
+                            this.props.addClassToPlaylist(i);
+                          }}
+                        />
+                        <p className="classTitle">{item.name}</p>
+                      </div>
                       <p className="classSubtitle">
                         {trainers.length === 0
                           ? null
@@ -111,8 +148,19 @@ class AllClassesLayout extends Component {
                             )[0].name}
                       </p>
                     </div>
-                    <img src={item.image} alt={item.image}></img>
-                    <div className="classesInfo">
+                    <img
+                      src={item.image}
+                      alt={item.image}
+                      onClick={() => {
+                        this.props.changeSelected("class", i);
+                      }}
+                    ></img>
+                    <div
+                      className="classesInfo"
+                      onClick={() => {
+                        this.props.changeSelected("class", i);
+                      }}
+                    >
                       {completedClasses.includes(i) ? (
                         <div className="completed">Completada</div>
                       ) : null}
