@@ -4,24 +4,24 @@ import getClasses from "../../Queries/getClasses";
 import "./AllClassesLayout.css";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { useHistory, useParams  } from "react-router-dom";
-
-// const { id } = useParams();
-// const history = useHistory();
+import getTrainer from "../../Queries/getTrainer";
 
 class AllClassesLayout extends Component {
   constructor(props) {
     super(props);
-    this.state = { classes: [] };
+    this.state = { classes: [], trainers: [] };
   }
   componentDidMount() {
     getClasses().then((data) => {
       this.setState({ classes: data });
+      getTrainer().then((data) => {
+        this.setState({ trainers: data });
+      });
     });
   }
 
   render() {
-    const { classes } = this.state;
+    const { classes, trainers } = this.state;
     const paperCSS = {
       display: "flex",
       flexDirection: "column",
@@ -47,28 +47,66 @@ class AllClassesLayout extends Component {
     ];
 
     const handleProceed = (e) => {
-      window.location.href = "/allClasses/class/2";
+      window.location.href = "/allClasses/class/" + e;
+    };
+
+    const levelcss = (level, id) => {
+      const levels = [];
+      for (let index = 0; index < 3; index++) {
+        let opacity = 0.4;
+        if (index <= level - 1) {
+          opacity = 1;
+        }
+        levels.push(
+          <div
+            key={id + "-" + index}
+            className="circleLevel"
+            style={{ opacity: opacity }}
+          ></div>
+        );
+      }
+      return (
+        <div key={id} className="circleLevelGrid">
+          Nivel {levels}
+        </div>
+      );
     };
 
     return (
       <div className="allClasses-layout">
+        <Link className="showMain" to={{ pathname: "/main" }}>
+          VOLVER
+        </Link>
         <Grid container spacing={3} className="classesGrid">
           <Grid item xs={12}>
             <Grid container columnSpacing={2}>
               {classes.map((item, i) => (
                 <Grid item xs={12} md={6} lg={4} key={i}>
                   <p></p>
-                  <Paper sx={paperCSS} onClick={handleProceed}>
+                  <Paper
+                    className="classGrid"
+                    sx={paperCSS}
+                    onClick={() => {
+                      handleProceed(i);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
                     <div className="classTop">
                       <p className="classTitle">{item.name}</p>
-                      <p className="classSubtitle">{item.instructor_id}</p>
+                      <p className="classSubtitle">
+                        {trainers.length === 0
+                          ? null
+                          : trainers.filter(
+                              (t) => t.id === item.instructor_id
+                            )[0].name}
+                      </p>
                     </div>
                     <img src={item.image} alt={item.image}></img>
                     <div className="classesInfo">
-                      <p className="classSubtitle">Nivel {item.level}</p>
+                      {levelcss(item.level, item.instructor_id)}
                       <p className="classSubtitle">
-                        {moment(1557697070824.94).toObject().date}{" "}
-                        {months[moment(1557697070824.94).toObject().months]}
+                        {moment(item.published).toObject().date}{" "}
+                        {months[moment(item.published).toObject().months]}
                       </p>
                       <p className="classSubtitle">
                         Duración {parseFloat(item.duration / 60).toFixed(0)}'

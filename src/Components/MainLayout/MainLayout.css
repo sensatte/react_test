@@ -37,17 +37,17 @@
 }
 
 .perfilItems .gridPoints {
-  font-size: 25px;
+  font-size: 20px;
   font-weight: bold;
   opacity: 1;
-  padding-bottom: 10px;
 }
 .circle {
   display: flex;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   background-color: green;
   border-radius: 50%;
+  margin-bottom: 4px;
 }
 
 .text {

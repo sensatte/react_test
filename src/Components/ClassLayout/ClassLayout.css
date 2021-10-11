@@ -23,9 +23,17 @@
 }
 
 p.classTitle2 {
-    font-size: 16px;
-  }
-  p.classSubtitle2 {
-    font-size: 12px;
-    opacity: 0.7;
-  }
+  font-size: 16px;
+}
+p.classSubtitle2 {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.classTopGrid {
+  width: 80%;
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  text-align: left;
+}

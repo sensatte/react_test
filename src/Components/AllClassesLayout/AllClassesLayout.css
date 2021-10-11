@@ -10,7 +10,7 @@
   width: 100%;
 }
 .classesGrid {
-  padding: 2em;
+  padding: 0em 2em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,11 +22,40 @@
   padding: 10px;
 }
 
- .classTop {
+.classTop {
   color: white;
   position: absolute;
   top: auto;
   width: 100%;
   padding: 6px;
   font-weight: 500;
+}
+
+.showMain {
+  background-color: #ff7900; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 3%;
+  margin: 20px;
+}
+
+.circleLevel {
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  margin-left: 4px;
+  margin-top: 2px;
+}
+
+.circleLevelGrid {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
