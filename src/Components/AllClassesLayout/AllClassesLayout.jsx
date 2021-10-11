@@ -3,17 +3,21 @@ import React, { Component } from "react";
 import getClasses from "../../Queries/getClasses";
 import "./AllClassesLayout.css";
 import moment from "moment";
-import { Link } from "react-router-dom";
 import getTrainer from "../../Queries/getTrainer";
 
 class AllClassesLayout extends Component {
   constructor(props) {
     super(props);
-    this.state = { classes: [], trainers: [] };
+    this.state = {
+      classes: [],
+      trainers: [],
+      completedClasses: [],
+      autoRepro: []
+    };
   }
   componentDidMount() {
     getClasses().then((data) => {
-      this.setState({ classes: data });
+      this.setState({ classes: data, completedClasses: this.props.completedClasses });
       getTrainer().then((data) => {
         this.setState({ trainers: data });
       });
@@ -21,7 +25,7 @@ class AllClassesLayout extends Component {
   }
 
   render() {
-    const { classes, trainers } = this.state;
+    const { classes, trainers, completedClasses } = this.state;
     const paperCSS = {
       display: "flex",
       flexDirection: "column",
@@ -45,10 +49,6 @@ class AllClassesLayout extends Component {
       "Nov",
       "Dec",
     ];
-
-    const handleProceed = (e) => {
-      window.location.href = "/allClasses/class/" + e;
-    };
 
     const levelcss = (level, id) => {
       const levels = [];
@@ -74,9 +74,19 @@ class AllClassesLayout extends Component {
 
     return (
       <div className="allClasses-layout">
-        <Link className="showMain" to={{ pathname: "/main" }}>
+        <Paper
+          className="showMain"
+          style={{
+            backgroundColor: "#ff7900",
+            color: "white",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            this.props.changeSelected("user", 0);
+          }}
+        >
           VOLVER
-        </Link>
+        </Paper>
         <Grid container spacing={3} className="classesGrid">
           <Grid item xs={12}>
             <Grid container columnSpacing={2}>
@@ -87,7 +97,7 @@ class AllClassesLayout extends Component {
                     className="classGrid"
                     sx={paperCSS}
                     onClick={() => {
-                      handleProceed(i);
+                      this.props.changeSelected("class", i);
                     }}
                     style={{ cursor: "pointer" }}
                   >
@@ -103,6 +113,9 @@ class AllClassesLayout extends Component {
                     </div>
                     <img src={item.image} alt={item.image}></img>
                     <div className="classesInfo">
+                      {completedClasses.includes(i) ? (
+                        <div className="completed">Completada</div>
+                      ) : null}
                       {levelcss(item.level, item.instructor_id)}
                       <p className="classSubtitle">
                         {moment(item.published).toObject().date}{" "}

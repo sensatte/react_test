@@ -7,9 +7,6 @@ import {
   Redirect,
 } from "react-router-dom";
 import Main from "./Pages/Main";
-// importimport Login from "./Pages/Login";
-import AllClasses from "./Pages/AllClasses";
-import Class from "./Pages/Class";
 
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
@@ -18,9 +15,10 @@ ReactDOM.render(
   <Router basename="">
     <Switch>
       <Redirect exact={true} from="/" to={"/main"} />
-      {/* <Route path="/login" exact={true} component={Login} /> */}
-      <Route path="/allClasses" exact={true} component={AllClasses} />
-      <Route path="/allClasses/class/:id" exact={true} component={Class} />
+      {/* <Route path="/allClasses" exact={true} component={AllClasses} />
+      <Route path="/allClasses/class/:id" exact={true} component={Class} /> */}
+      {/* <Route path="/classes" exact={true} component={Classes} /> */}
+
       <Route path="*" exact={true} component={Main} />
     </Switch>
   </Router>,

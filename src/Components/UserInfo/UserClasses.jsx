@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Grid } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import getClasses from "../../Queries/getClasses";
-import { Link } from "react-router-dom";
 import moment from "moment";
 import getTrainer from "../../Queries/getTrainer";
 
@@ -47,17 +46,15 @@ class UserClasses extends Component {
       "Dec",
     ];
 
-    const handleProceed = (e) => {
-      window.location.href = "/allClasses/class/" + e;
-    };
-
     return (
       <div className="perfilClasses">
         <div className="perfilClasses top">
           <h5>ÚLTIMAS CLASES</h5>
-          <Link className="showClasses" to={{ pathname: "/allClasses" }}>
+          <Paper className="showMain" style={{backgroundColor:"#ff7900", color:"white", cursor: "pointer"}} onClick={() => {
+                        this.props.changeSelected("allClasses", 0);
+                      }}>
             VER TODAS
-          </Link>
+          </Paper>
         </div>
 
         <Grid container spacing={3} className="perfilClassesGrid">
@@ -81,7 +78,7 @@ class UserClasses extends Component {
                     <Paper
                       sx={paperCSS}
                       onClick={() => {
-                        handleProceed(i);
+                        this.props.changeSelected("class", i);
                       }}
                       style={{ cursor: "pointer" }}
                     >
