@@ -20,7 +20,7 @@ class SubLayout extends Component {
   }
   render() {
     const { subTime } = this.state;
-    const subsTime = [0.1, 0.2, 0.5];
+    const subsTime = [1, 5, 10];
     const paperCSS = {
       display: "flex",
       flexDirection: "column",
