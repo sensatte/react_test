@@ -24,24 +24,29 @@ class ClassLayout extends Component {
   }
 
   componentDidMount() {
-    const id = this.props.id;
-    getClasses().then((data) => {
-      this.setState({
-        name: data[id].name,
-        id: id,
-      });
-      getTrainer().then((trainer) => {
+    if (this.props.subTime === 0) {
+      this.props.changeSelected("sub", this.props.id);
+    } else {
+      const id = this.props.id;
+      getClasses().then((data) => {
         this.setState({
-          instructor: trainer.filter((t) => t.id === data[id].instructor_id)[0]
-            .name,
+          name: data[id].name,
+          id: id,
+        });
+        getTrainer().then((trainer) => {
+          this.setState({
+            instructor: trainer.filter(
+              (t) => t.id === data[id].instructor_id
+            )[0].name,
+          });
         });
       });
-    });
 
-    let timeLeftVar = this.secondsToTime(this.state.seconds);
-    this.setState({ time: timeLeftVar });
-    if (this.timer === 0 && this.state.seconds > 0) {
-      this.timer = setInterval(this.countDown, 1000);
+      let timeLeftVar = this.secondsToTime(this.state.seconds);
+      this.setState({ time: timeLeftVar });
+      if (this.timer === 0 && this.state.seconds > 0) {
+        this.timer = setInterval(this.countDown, 1000);
+      }
     }
   }
 
@@ -59,8 +64,8 @@ class ClassLayout extends Component {
   }
 
   setCompleted() {
-    this.props.completeClass(this.props.id)
-    this.props.changeSelected("allClasses", this.props.id)
+    this.props.completeClass(this.props.id);
+    this.props.changeSelected("allClasses", this.props.id);
   }
 
   render() {
@@ -68,9 +73,17 @@ class ClassLayout extends Component {
     return (
       <div className="class-layout">
         <div className="classTopGrid">
-          <Paper className="showMain" style={{backgroundColor:"#ff7900", color:"white", cursor: "pointer"}} onClick={() => {
-                        this.props.changeSelected("allClasses", this.props.id);
-                      }}>
+          <Paper
+            className="showMain"
+            style={{
+              backgroundColor: "#ff7900",
+              color: "white",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              this.props.changeSelected("allClasses", this.props.id);
+            }}
+          >
             VOLVER
           </Paper>
           <div>

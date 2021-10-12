@@ -33,26 +33,32 @@ class ClassesPlaylistLayout extends Component {
   }
 
   componentDidMount() {
-    const { id } = this.props;
-    getClasses().then((data) => {
-      this.setState({
-        classes: data,
-        name: data[id].name,
-        id: id,
-      });
-      getTrainer().then((trainer) => {
+    if (this.props.subTime === 0) {
+      this.props.changeSelected("sub", this.props.id);
+      this.props.removePlaylist()
+    } else {
+      const { id } = this.props;
+      getClasses().then((data) => {
         this.setState({
-          trainers: trainer,
-          instructor: trainer.filter((t) => t.id === data[id].instructor_id)[0]
-            .name,
+          classes: data,
+          name: data[id].name,
+          id: id,
+        });
+        getTrainer().then((trainer) => {
+          this.setState({
+            trainers: trainer,
+            instructor: trainer.filter(
+              (t) => t.id === data[id].instructor_id
+            )[0].name,
+          });
         });
       });
-    });
 
-    let timeLeftVar = this.secondsToTime(this.state.seconds);
-    this.setState({ time: timeLeftVar });
-    if (this.timer === 0 && this.state.seconds > 0) {
-      this.timer = setInterval(this.countDown, 1000);
+      let timeLeftVar = this.secondsToTime(this.state.seconds);
+      this.setState({ time: timeLeftVar });
+      if (this.timer === 0 && this.state.seconds > 0) {
+        this.timer = setInterval(this.countDown, 1000);
+      }
     }
   }
 
